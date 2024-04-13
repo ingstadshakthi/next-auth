@@ -8,17 +8,6 @@ export default function ProfilePage() {
   const router = useRouter();
   const [data, setData] = useState('');
 
-  async function getUserDetail() {
-    try {
-      const res = await axios.get('/api/users/me');
-      console.log(res.data.data._id);
-      setData(res.data.data._id);
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-      router.push('/login');
-    }
-  }
-
   async function logout() {
     try {
       await axios.get('/api/users/logout');
@@ -30,8 +19,18 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
+    async function getUserDetail() {
+      try {
+        const res = await axios.get('/api/users/me');
+        console.log(res.data.data._id);
+        setData(res.data.data._id);
+      } catch (error: any) {
+        toast.error(error.response.data.error);
+        router.push('/login');
+      }
+    }
     getUserDetail();
-  }, [getUserDetail]);
+  }, []);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>

@@ -1,20 +1,18 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useSearchParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function VerifyEmailPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const tokenParam = searchParams.get('token') || '';
 
   const [error, setError] = useState(false);
 
   async function verifyEmail() {
+    const urlToken = window.location.search.split('=')[1] || '';
     try {
-      await axios.post('/api/users/verifyemail', { token: tokenParam });
+      await axios.post('/api/users/verifyemail', { token: urlToken });
       toast.success('user verified successfully');
       router.push('/login');
     } catch (error: any) {
